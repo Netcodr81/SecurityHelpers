@@ -3,7 +3,7 @@
 Module Module1
 
     Sub Main()
-        Dim CryptoManager As SymmetricCryptographyHelpers = New SymmetricCryptographyHelpers()
+        Dim CryptoManager As SymmetricCryptographyHelper = New SymmetricCryptographyHelper()
         Dim Key As (String, String) = CryptoManager.GenerateSymmetricEncryptionKey()
         Dim generatedKey = Key.Item1
         Dim generatedIV = Key.Item2

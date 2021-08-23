@@ -45,16 +45,6 @@ namespace SecurityHelpers
 
         }
 
-        public RSA CreateRsaPublicKey(X509Certificate2 certificate)
-        {
-            RSA publicKeyProvider = certificate.GetRSAPublicKey();
-            return publicKeyProvider;
-        }
 
-        public RSA CreateRsaPrivateKey(X509Certificate2 certificate)
-        {
-            RSA privateKeyProvider = certificate.GetRSAPrivateKey();
-            return privateKeyProvider;
-        }
     }
 }
