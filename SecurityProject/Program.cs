@@ -1,9 +1,6 @@
 ﻿using SecurityHelpers;
-using SecurityHelpers.BaseClasses;
 using SecurityHelpers.Helpers;
 using System;
-using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
 
 namespace SecurityProject
 {
@@ -33,29 +30,68 @@ namespace SecurityProject
             Console.WriteLine($"Encrypted Text: {encryptedText}");
             Console.WriteLine($"Decrypted Text: { decryptedString}");
             Console.WriteLine($"Decrypted with wrong key text: {decryptedWithWrongKey}");
+            Console.WriteLine();
+            Console.WriteLine();
 
             Console.WriteLine("------------------------------------------------------------------------------------------------");
             Console.WriteLine("                                  Asymmetric Encryption                                         ");
             Console.WriteLine("------------------------------------------------------------------------------------------------");
 
-            //RsaEncryption asyHelper = new RsaEncryption();
-            //string publicKey = asyHelper.GetPublicKey();
-            //string privatekey = asyHelper.GetPublicKey();
-            //string asymmetricOriginalText = "This is the original text";
-            //string asymmetricEncryptedText = asyHelper.Encrypt(asymmetricOriginalText, publicKey);
-            //string asymmetricDecryptedText = asyHelper.Decrypt(asymmetricEncryptedText, privatekey);
-            NewRSA asymmetricHelper = new NewRSA();
-            string publicKey = asymmetricHelper.GetPrivateKey();
-            string privateKey = asymmetricHelper.GetPrivateKey();
+            AsymmetricCryptographyHelpers asymmetricHelper = new AsymmetricCryptographyHelpers();
+            (string publicKey, string privateKey) encryptionKeys = asymmetricHelper.GenerateKeys();
+            string publicKey = encryptionKeys.publicKey;
+            string privateKey = encryptionKeys.privateKey;
             string asymmetricOriginalText = "Original asymmetric text";
             string asymmetricEncryptedText = asymmetricHelper.Encrypt(asymmetricOriginalText, publicKey);
             string asymmetricDecryptedText = asymmetricHelper.Decrypt(asymmetricEncryptedText, privateKey);
 
+
             Console.WriteLine($"Public key: {publicKey}");
+            Console.WriteLine();
             Console.WriteLine($"Private key: {privateKey}");
+            Console.WriteLine();
             Console.WriteLine($"Original text: {asymmetricOriginalText}");
+            Console.WriteLine();
             Console.WriteLine($"Encrypted text: {asymmetricEncryptedText}");
+            Console.WriteLine();
             Console.WriteLine($"Decrypted text: {asymmetricDecryptedText}");
+            Console.WriteLine();
+            Console.WriteLine(string.Empty);
+            Console.WriteLine(string.Empty);
+            Console.WriteLine("Exporting keys to your desktop...");
+
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            try
+            {
+                asymmetricHelper.ExportKeysToFile(encryptionKeys, path);
+
+                Console.WriteLine("Keys exported to your desktop");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("------------------------------------------------------------------------------------------------");
+            Console.WriteLine("                                          Hashing                                               ");
+            Console.WriteLine("------------------------------------------------------------------------------------------------");
+
+            HashingHelpers hashHelper = new HashingHelpers();
+            string textToHash = "This is a sentence to hash";
+            string hashKey = "password";
+
+
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine($"Text to hash: {textToHash}");
+            Console.WriteLine($"Password for HMAC: {hashKey}");
+            Console.WriteLine();
+            Console.WriteLine($"Non authenticated hash: {hashHelper.ComputeHash(textToHash)}");
+            Console.WriteLine();
+            Console.WriteLine($"Authenticated hash (HMAC): {hashHelper.ComputeHmac256(hashKey, textToHash)}");
 
             Console.ReadLine();
         }
