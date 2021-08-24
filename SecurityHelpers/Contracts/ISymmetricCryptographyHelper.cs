@@ -10,5 +10,9 @@ namespace SecurityHelpers.Contracts
 
         string GenerateInitialVector();
         string GenerateSymmetricKey();
+
+        void GenerateAndExportKeysToFile(string filePath, string filename = "key");
+
+        void ExportKeyToFile(string key, string filePath, string filename = "key");
     }
 }

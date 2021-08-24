@@ -111,5 +111,66 @@ namespace SecurityHelpers
         {
             return StaticHelpers.GenerateSymmetricKey();
         }
+
+        public void GenerateAndExportKeysToFile(string filePath, string filename = "key")
+        {
+            if (string.IsNullOrEmpty(filePath))
+            {
+                throw new ArgumentNullException("File path can't be blank");
+            }
+
+            string keys = this.GenerateSymmetricKey();
+
+            try
+            {
+                string fileName = Path.Combine(filePath, $"{filename}.txt");
+                FileInfo fileInfo = new FileInfo(fileName);
+
+                using (StreamWriter streamWriter = fileInfo.CreateText())
+                {
+                    streamWriter.WriteLine("--------------------------------------------------------------------------------");
+                    streamWriter.WriteLine($"             Key - Generated on {DateTime.Now.ToShortDateString()}            ");
+                    streamWriter.WriteLine("--------------------------------------------------------------------------------");
+                    streamWriter.WriteLine($"Privte Key: {keys}");
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw new Exception("An error occurred while crating the file");
+            }
+
+        }
+
+        public void ExportKeyToFile(string key, string filePath, string filename = "key")
+        {
+            if (string.IsNullOrEmpty(filePath))
+            {
+                throw new ArgumentNullException("File path can't be blank");
+            }
+
+            try
+            {
+                string fileName = Path.Combine(filePath, $"{filename}.txt");
+                FileInfo fileInfo = new FileInfo(fileName);
+
+                using (StreamWriter streamWriter = fileInfo.CreateText())
+                {
+                    streamWriter.WriteLine("--------------------------------------------------------------------------------");
+                    streamWriter.WriteLine($"             Key - Generated on {DateTime.Now.ToShortDateString()}            ");
+                    streamWriter.WriteLine("--------------------------------------------------------------------------------");
+                    streamWriter.WriteLine($"Key: {key}");
+
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw new Exception("An error occurred while crating the file");
+            }
+
+        }
     }
 }
